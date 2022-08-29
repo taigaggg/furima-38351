@@ -1,24 +1,87 @@
-# README
+## itemsテーブル
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+|Column      |Type      |Options                        |
+|------------|----------|-------------------------------|
+|item_name   |string    |null: false                    |
+|explanation |text      |null: false                    |
+|price       |integer   |null: false                    |
+|user        |references|null: false, foreign_key: true |
+<!-- imageカラムはactive_storage導入時に自動でテーブルなどが生成される -->
 
-Things you may want to cover:
+<!-- 以下は、Activehashにて実装する
+|category_id    |integer |null: false |
+|condition_id   |integer |null: false |
+|postage_id     |integer |null: false |
+|prefecture_id  |integer |null: false |
+|send_date_id   |integer |null: false | -->
 
-* Ruby version
+### Association
+has_many :comments
+belongs_to :user
+has_one :purchase
 
-* System dependencies
+## commentsテーブル
 
-* Configuration
+|Column |Type      |Options                        |
+|-------|----------|-------------------------------|
+|comment|text      |                               |
+|item   |references|null: false, foreign_key: true |
+|user   |references|null: false, foreign_key: true |
 
-* Database creation
 
-* Database initialization
+### Association
+belongs_to :item
+belongs_to :user
 
-* How to run the test suite
+<!-- 注意：コメント機能は追加実装の範囲 -->
 
-* Services (job queues, cache servers, search engines, etc.)
+## usersテーブル
 
-* Deployment instructions
+|Column            |Type   |Options                   |
+|------------------|-------|--------------------------|
+|nickname          |string |null: false               |
+|email             |string |null: false, unique: true |
+|encrypted_password|string |null: false               |
+|last_name_full    |string |null: false               |
+|first_name_full   |string |null: false               |
+|last_name_kana    |string |null: false               |
+|first_name_kana   |string |null: false               |
+|birthday          |date   |null: false               |
 
-* ...
+
+### Association
+has_many :comments
+has_many :items
+has_many :purchases
+
+## purchasesテーブル
+
+|Column|Type      |Options                        |
+|------|----------|-------------------------------|
+|item  |references|null: false, foreign_key: true |
+|user  |references|null: false, foreign_key: true |
+
+<!-- foreign_key: trueによって、「この商品は誰が購入したものなのか」を紐づけることができる -->
+
+### Association
+belongs_to :item
+has_one :address
+belongs_to :user
+
+## addressesテーブル
+
+|Column      |Type      |Options              |
+|------------|----------|---------------------|
+|post_code   |string    |null: false          |
+|municipality|string    |null: false          |
+|block_number|string    |null: false          |
+|building    |string    |                     |
+|phone_number|string    |null: false          |
+|purchase    |references|foreign_key: true   。
+
+<!-- 以下は、Activehashにて実装する
+|prefecture_id  |integer |null: false | 
+   都道府県                 -->
+
+### Association
+belongs_to :purchase
