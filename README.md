@@ -82,6 +82,6 @@ belongs_to :user
 <!-- 以下は、Activehashにて実装する
 |prefecture_id  |integer |null: false | 
    都道府県                 -->
-
+   
 ### Association
 belongs_to :purchase
