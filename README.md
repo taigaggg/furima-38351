@@ -48,6 +48,7 @@ belongs_to :user
 |first_name_kana   |string |null: false               |
 |birthday          |date   |null: false               |
 
+<!-- ユーザー管理機能で使用するdeviseの設定で、emailカラムには一意性制約がかかっている為、emailにunique: trueを記載している -->
 
 ### Association
 has_many :comments
