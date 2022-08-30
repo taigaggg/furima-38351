@@ -12,8 +12,8 @@ class User < ApplicationRecord
   validates :birthday, presence: true
   
   # パスワード半角に英数字の必須を指定した
-  VALID_PASSWORD_REGEX = /\A[a-z0-9]+\z/i
-  validates :encrypted_password, format: { with: VALID_PASSWORD_REGEX }
+  VALID_PASSWORD_REGEX = /\A(?=.*?[a-z])(?=.*?[\d])[a-z\d]+\z/i.freeze
+  validates :password, format: { with: VALID_PASSWORD_REGEX }
   # /パスワード半角に英数字の必須を指定した
 
   # 名前に全角(漢字、ひらがな、カタカナ)の必須を指定した
