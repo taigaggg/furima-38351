@@ -17,7 +17,7 @@ class User < ApplicationRecord
   # /パスワード半角に英数字の必須を指定した
 
   # 名前に全角(漢字、ひらがな、カタカナ)の必須を指定した
-  ZENKAKU_FULL = /\A[ぁ-んァ-ン一-龥]/
+  ZENKAKU_FULL = /\A[ぁ-んァ-ヶ一-龥々ー]+\z/
   validates :last_name_full, format: { with: ZENKAKU_FULL }
   validates :first_name_full, format: { with: ZENKAKU_FULL }
   # /名前に全角(漢字、ひらがな、カタカナ)の必須を指定した

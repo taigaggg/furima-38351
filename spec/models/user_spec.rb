@@ -27,6 +27,13 @@ RSpec.describe User, type: :model do
         @user.valid?
         expect(@user.errors.full_messages).to include('Email is invalid')
       end
+      it '重複したメールアドレスは登録できない' do
+        @user.save
+        another_user = FactoryBot.build(:user)
+        another_user.email = @user.email
+        another_user.valid?
+        expect(another_user.errors.full_messages).to include("Email has already been taken")
+      end
       it 'passwordが空では登録できない' do
         @user.password = ""
         @user.valid?
@@ -38,9 +45,21 @@ RSpec.describe User, type: :model do
         @user.valid?
         expect(@user.errors.full_messages).to include('Password is too short (minimum is 6 characters)')
       end
-      it 'passwordが半角英数字混合でないと登録できない' do
+      it 'passwordが半角英数字混合でないと登録できない(半角英字のみ)' do
         @user.password = 'taigagg'
         @user.password_confirmation = 'taigagg'
+        @user.valid?
+        expect(@user.errors.full_messages).to include("Password is invalid")
+      end
+      it 'passwordが半角英数字混合でないと登録できない(半角数字のみ)' do
+        @user.password = '123456'
+        @user.password_confirmation = '123456'
+        @user.valid?
+        expect(@user.errors.full_messages).to include("Password is invalid")
+      end
+      it 'passwordが半角英数字混合でないと登録できない(全角入力)' do
+        @user.password = 'ABCDEF'
+        @user.password_confirmation = 'ABCDEF'
         @user.valid?
         expect(@user.errors.full_messages).to include("Password is invalid")
       end
@@ -62,9 +81,13 @@ RSpec.describe User, type: :model do
       end
       it ' お名前(全角)は、全角（漢字・ひらがな・カタカナ）での入力が必須であること' do
         @user.last_name_kana = "yamada"
+        @user.valid?
+        expect(@user.errors.full_messages).to include("Last name kana is invalid")
+      end
+      it ' お名前(全角)は、全角（漢字・ひらがな・カタカナ）での入力が必須であること' do
         @user.first_name_kana = "tarou"
         @user.valid?
-        expect(@user.errors.full_messages).to include("Last name kana is invalid","First name kana is invalid")
+        expect(@user.errors.full_messages).to include("First name kana is invalid")
       end
       it 'お名前カナ(全角)は、名字が必須であること' do
         @user.last_name_kana = ""
@@ -78,9 +101,13 @@ RSpec.describe User, type: :model do
       end
       it 'お名前カナ(全角)は、全角（カタカナ）での入力が必須であること' do
         @user.last_name_kana = "yamada"
+        @user.valid?
+        expect(@user.errors.full_messages).to include("Last name kana is invalid")
+      end
+      it 'お名前カナ(全角)は、全角（カタカナ）での入力が必須であること' do
         @user.first_name_kana = "tarou"
         @user.valid?
-        expect(@user.errors.full_messages).to include("Last name kana is invalid","First name kana is invalid")
+        expect(@user.errors.full_messages).to include("First name kana is invalid")
       end
       it '生年月日が必須であること' do
         @user.birthday = ""
