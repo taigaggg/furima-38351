@@ -8,6 +8,7 @@ RSpec.describe User, type: :model do
   describe "ユーザー新規登録" do
     context "新規登録できるとき" do
       it '全ての情報が存在すれば登録できる' do
+        expect(@user).to be_vali
       end
     end
 
