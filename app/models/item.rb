@@ -20,9 +20,4 @@ class Item < ApplicationRecord
   validates :prefecture_id, numericality: { other_than:1, message: "can't be blank" }
   validates :send_date_id, numericality: { other_than:1, message: "can't be blank" }
 
-  # # 価格は半角数字の必須を指定した
-  Price = /\A[0-9]+\z/
-  validates :price, format: { with: Price }
-  # # /価格は半角数字の必須を指定した
-
 end

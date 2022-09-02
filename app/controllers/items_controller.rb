@@ -1,8 +1,10 @@
 class ItemsController < ApplicationController
+  before_action :authenticate_user! , only:[:new]
+  # ログイン画面へ誘導
  
   def index
-    @items = Item.all.order("created_at DESC")
-    # 記事が新規投稿順に並ぶように設定した
+    # @items = Item.all.order("created_at DESC")
+    # # 記事が新規投稿順に並ぶように設定した
   end
 
   def new
