@@ -3,7 +3,9 @@ class PurchasesController < ApplicationController
   before_action :set_item, only: [:index, :create]
 
   def index
-    if current_user.id == @item.user_id
+    if (current_user.id != @item.user_id) && (@item.purchase.present?)
+      redirect_to root_path
+    elsif  current_user.id == @item.user_id
       redirect_to root_path
     else
       @purchase_address = PurchaseAddress.new
