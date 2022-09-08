@@ -6,7 +6,7 @@ RSpec.describe PurchaseAddress, type: :model do
       user = FactoryBot.create(:user)
       item = FactoryBot.create(:item)
       @purchase_address = FactoryBot.build(:purchase_address, user_id: user.id, item_id: item.id)
-      sleep 0.1
+      sleep 0.2
       # テストスピードを調整
     end
 
@@ -75,6 +75,16 @@ RSpec.describe PurchaseAddress, type: :model do
         @purchase_address.phone_number = '0801234567８'
         @purchase_address.valid?
         expect(@purchase_address.errors.full_messages).to include("Phone number is invalid.")
+      end
+      it 'ユーザー情報が紐付いてないと保存できない' do
+        @purchase_address.user_id = nil
+        @purchase_address.valid?
+        expect(@purchase_address.errors.full_messages).to include("User can't be blank")
+      end
+      it '商品情報が紐付いてないと保存できない' do
+        @purchase_address.item_id = nil
+        @purchase_address.valid?
+        expect(@purchase_address.errors.full_messages).to include("Item can't be blank")
       end
     end
   end
