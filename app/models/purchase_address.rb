@@ -3,14 +3,14 @@ class PurchaseAddress
   attr_accessor :token, :post_code, :prefecture_id, :municipality, :block_number, :building, :phone_number, :item_id, :user_id
 
   with_options presence: true do
-    validates :token, presence: true
+    validates :token
 
     # 数字3桁、ハイフン、数字4桁の並びのみ許可する
-    validates :post_code, presence: true, format: {with: /\A[0-9]{3}-[0-9]{4}\z/, message: "is invalid. Include hyphen(-)"}
+    validates :post_code, format: {with: /\A[0-9]{3}-[0-9]{4}\z/, message: "is invalid. Include hyphen(-)"}
     validates :prefecture_id, numericality: {other_than: 1, message: "can't be blank"}
-    validates :municipality, presence: true
-    validates :block_number, presence: true
-    validates :phone_number, presence: true, format: {with: /\A\d{10,11}\z/, message: "is invalid."}
+    validates :municipality
+    validates :block_number
+    validates :phone_number, format: {with: /\A\d{10,11}\z/, message: "is invalid."}
     validates :user_id
     validates :item_id
   end
